@@ -19,19 +19,19 @@
 </style>
 
 <body>
+
+<div align="left" margin-t>
 <svg width="800" height="200">
     <path></path>
 </svg>
-
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
 <script>
     var lineGenerator = d3.line()
         .curve(d3.curveCardinal);
 
 
-
-    var dataPoints = [
-
+/*
         {
             x:[0,100,200,300,400,500],
             y:[0,0,0,0,0,0]
@@ -51,31 +51,60 @@
         }
     ];
 
+*/
 
 
+    function createArray(number){
+        var k = []
+        for (var i =0; i < number; i++){
+        k.push(i * 5  );
+        }
+        return k;
+    }
     width = 500;
     height = 120;
     var svg = d3.select("body")
         .append("svg")
         .attr("width", width + 200)
-        .attr("height", height)
-        .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove);
+        .attr("height", height);
+
+    d3.csv("tweets.csv", function (data) {
 
 
-/*
-    svg.append("rect")
-        .attr("class", "overlay")
-        .attr("width", 600)
-        .attr("height", 100)
-        .style("fill",none)
-        .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
-        .on("mousemove", mousemove());
-*/
 
-    var indexies = d3.range( dataPoints[0].x.length );
+
+        var dataPoints = [];
+        var ex = [];
+        var ey = [];
+        for (var i = 0; i < data.length; i++) {
+            var tot = parseInt(data[i].dem) + parseInt(data[i].rep);
+            ex.push(Math.floor(100 * parseInt(data[i].dem) / tot));
+            ey.push(Math.floor(100 - 100 * parseInt(data[i].rep) / tot));
+        }
+        console.log(ex);
+        dataPoints.push({
+            x: createArray(data.length),
+            y: Array.apply(null, Array(data.length)).map(Number.prototype.valueOf, 0)});
+
+        dataPoints.push(
+            {
+                x: createArray(data.length),
+            y:ex});
+
+        dataPoints.push(
+            {
+                x: createArray(data.length),
+            y: ey});
+        dataPoints.push(
+            {
+                x: createArray(data.length),
+            y: Array.apply(null, Array(data.length)).map(Number.prototype.valueOf, 100)
+    })
+        ;
+
+
+
+    var indexies = d3.range( dataPoints[0].x.length);
 
     var area = d3.area()
         .x0( function(d) { return dataPoints[0].x[d] } )
@@ -101,21 +130,21 @@
     svg.append('path')
         .datum(indexies)
         .attr('class', 'area')
-        .attr('fill', 'lightsteelblue')
+        .attr('fill', 'red')
         .attr('d', area)
         .style("fill",'#5974ff');
     svg.append('path')
         .datum(indexies)
         .attr('class', 'area')
-        .attr('fill', 'lightsteelblue')
+        .attr('fill', 'green')
         .attr('d', area2)
         .style("fill",'#ecf771');
     svg.append('path')
         .datum(indexies)
         .attr('class', 'area')
-        .attr('fill', 'lightsteelblue')
+        .attr('fill', 'blue')
         .attr('d', area3)
-        .style("fill",'#e24a4a');
+        .style("fill",'#E91D0E');
     var focus = svg.append("g")
         .attr("class", "circle")
         .style("display", "none");
@@ -127,7 +156,9 @@
         .attr("x", 9)
         .attr("dy", ".35em");
     //Draw lines
+        console.log(dataPoints);
     for (let i = 0; i < dataPoints.length; i++){
+        console.log("DD");
         svg.append('path')
             .attr("d",lineGenerator(d3.zip(dataPoints[i].x, dataPoints[i].y)));
     }
@@ -142,25 +173,31 @@
         return map1.indexOf(Math.min(...map1));
     }
 
+        svg.on("mouseover", function() { focus.style("display", null);})
+            .on("mouseout", function() { focus.style("display", "none");})
+            .on("mousemove", mousemove);
 
 
-    function mousemove() {
-        var coordinates = d3.mouse(this);
-        var dist = minDistance(coordinates[0], dataPoints[0].x);
-        var ind = minIndex(coordinates[0], dataPoints[0].x);
-        if (dist < 10){
-            focus.select("text").text("D: " + (100 - dataPoints[2].y[ind]) +  "R: " +  dataPoints[1].y[ind]);
-            focus.select('r',4.5);
+        function mousemove() {
+            var coordinates = d3.mouse(this);
+            var dist = minDistance(coordinates[0], dataPoints[0].x);
+            var ind = minIndex(coordinates[0], dataPoints[0].x);
+            if (dist < 10){
+                //focus.select("text").text(coordinates[0] + "," + coordinates[1]);
+                focus.select("text").text("R: " + (100 - dataPoints[2].y[ind]) +  "D: " +  dataPoints[1].y[ind]);
+                focus.select('r',4.5);
+            }
+            else{
+                focus.select("text").text("");
+                focus.select('r',0);
+            }
+            focus.attr("transform", "translate(" + coordinates[0] + "," + coordinates[1] + ")");
+
+
         }
-        else{
-            focus.select("text").text("");
-            focus.select('r',0);
-        }
-        focus.attr("transform", "translate(" + coordinates[0] + "," + coordinates[1] + ")");
 
 
-    }
-
+    });
 </script>
 </body>
 </html>
