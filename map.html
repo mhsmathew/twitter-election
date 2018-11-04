@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+    .state{
+        fill: none;
+        stroke: #a9a9a9;
+        stroke-width: 1;
+    }
+    .state:hover{
+        fill-opacity:0.5;
+    }
+    #tooltip {
+        position: absolute;
+        text-align: center;
+        padding: 20px;
+        margin: 10px;
+        font: 12px sans-serif;
+        background: lightsteelblue;
+        border: 1px;
+        border-radius: 2px;
+        pointer-events: none;
+    }
+    #tooltip h4{
+        margin:0;
+        font-size:14px;
+    }
+    #tooltip{
+        background:rgba(0,0,0,0.9);
+        border:1px solid grey;
+        border-radius:5px;
+        font-size:12px;
+        width:auto;
+        padding:4px;
+        color:white;
+        opacity:0;
+    }
+    #tooltip table{
+        table-layout:fixed;
+    }
+    #tooltip tr td{
+        padding:0;
+        margin:0;
+    }
+    #tooltip tr td:nth-child(1){
+        width:50px;
+    }
+    #tooltip tr td:nth-child(2){
+        text-align:center;
+    }
+</style>
+<body>
+<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+<div id="tooltip"></div><!-- div to hold tooltip. -->
+<script src="uStates.js"></script> <!-- creates uStates. -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+
+    function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+        return "<h4>"+n+"</h4><table>"+
+            "<tr><td>Democrat</td><td>"+(d.low)+"</td></tr>"+
+            "<tr><td>Republican</td><td>"+(d.high)+"</td></tr>"+
+            "</table>";
+    }
+
+    var democrat = ["OR","NH","IL"];
+    var republican = ["ID","AK","KS","OK","IA","SD","KY","NC","SC","GA","LS","AR"];
+    var split = ["CO","AL"];
+    var sortedNames = ["AZ","CA","CT","DE","FL","HI","IN","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NJ","NM","NY","ND","OH","PA","RI","TN","TX","UT","VT","VA","WA","WV","WI","WY"];
+
+    var p = [37.868771617487575, 69.35962803251843, 71.25076423157319, 42.402737930428586, 31.039203919640258, 71.2996344280187, 25.574593233115504, 69.85554593008672, 33.206189538946745, 70.16013736054722, 65.8649157526557, 54.43486750421452, 34.936270134621424, 77.66179012339533, 74.03795592545102, 64.7750031025961, 34.626947590960434, 29.065267085040183, 71.8616055775953, 71.19522975973517, 66.9999039086749, 57.93742207858073, 67.05689541511316, 79.02048351047668, 74.08565371118036, 23.268669237458624, 64.75040946212508, 69.77349187663884, 66.87272743962814, 75.64024829472021, 29.93053826903012, 55.56705228407835, 63.92361850224887, 70.70237698460613, 72.89959144931542, 72.86734357439653, 71.2417677542378, 66.65422000647425, 72.25790709965878, 77.84023708406957, 24.206178349971353, 68.92919091088592, 46.702656147512805, 27.61169734748978, 44.62065814940255, 48.23018243660573, 21.560296425771895, 24.21913757579302, 64.15398936112592, 56.43612836267591, 20.17553062359959, 40.38240342168915, 39.896509938496706, 30.894735099280545, 38.82293968749208, 77.70328063814144, 76.41512888568803, 34.621006235639726, 50.43628887621303, 64.5230265906664, 60.678403539437255, 47.40973165731412, 41.18772764005847, 52.307307575669796, 78.56395505104685, 22.694927776089997, 41.7296120207964, 79.14552464941805, 47.405248345988696, 54.04639706863271, 66.51771866626193, 54.71522408248553, 67.29126446999004, 68.25366492969363, 61.874433084803236, 70.7102131584534, 78.26868113210159, 40.01589072811562, 74.23347148424583, 79.23328159251838, 50.42610381718016, 44.32452974937969, 74.32619893566073, 42.11920662840899, 73.53806597842811, 20.488178310144857, 54.33088439733256, 52.54211417002514, 64.49904042439044, 28.502286197142748, 53.24188118886796, 70.87870647225766, 65.42919653759016, 44.46896742878009, 37.493680324465736, 33.798620314357684, 23.52410053739901, 41.82541077499707, 73.60805711876426, 47.037061046935264];
+    function stateValue(state){
+        if (democrat.includes(state)){
+            return 100;
+        }
+        else if (republican.includes(state)){
+            return 0;
+        }
+        else if (split.includes(state)){
+            return 50;
+        }
+        else {
+            return p[sortedNames.indexOf(state)];
+        }
+    }
+
+    function colour (percentage){
+        var newPercentage = (50 - Math.abs(percentage - 50))/50;
+        if (percentage > 50){
+            return d3.rgb(newPercentage * 255, newPercentage * 255, 255);
+        }
+        else{
+            return d3.rgb(255, newPercentage*255, newPercentage*255);
+        }
+    }
+
+
+    var sampleData ={};	/* Sample random data. */
+    ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+        "ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH",
+        "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT",
+        "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN",
+        "WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+        .forEach(function(d){
+            var low=Math.round(10 * stateValue(d))/10,
+                high=Math.round(1000-10 * low)/10;
+            sampleData[d]={low:low, high:high,
+                color:colour(low)};
+        });
+
+    /* draw states on id #statesvg */
+    uStates.draw("#statesvg", sampleData, tooltipHtml);
+
+    d3.select(self.frameElement).style("height", "600px");
+</script>
+
+</body>
