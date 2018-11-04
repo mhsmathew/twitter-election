@@ -1,0 +1,107 @@
+[
+  {
+    "State": "Arizona",
+    "Democrat": "kyrstensinema",
+    "Republican": "RepMcSally"
+  },
+  {
+    "State": "California",
+    "Democrat": "SenFeinstein",
+    "Republican": "kdeleon"
+  },
+  {
+    "State": "Connecticut",
+    "Democrat": "ChrisMurphyCT",
+    "Republican": "MattCoreyCT"
+  },
+  {
+    "State": "Delaware",
+    "Democrat": "SenatorCarper",
+    "Republican": "RobArlett"
+  },
+  {
+    "State": "Florida",
+    "Democrat": "SenBillNelson",
+    "Republican": "FLGovScott"
+  },
+  {
+    "State": "Hawaii",
+    "Democrat": "maziehirono",
+    "Republican": "rcurtis808"
+  },
+  {
+    "State": "Indiana",
+    "Democrat": "SenDonnelly",
+    "Republican": "braun4indiana"
+  },
+  {
+    "State": "Maine",
+    "Democrat": "SenAngusKing",
+    "Republican": "SenatorBrakey"
+  },
+  {
+    "State": "Maryland",
+    "Democrat": "SenatorCardin",
+    "Republican": "Campbell4MD"
+  },
+  {
+    "State": "Massachusetts",
+    "Democrat": "SenWarren",
+    "Republican": "DiehlForSenate"
+  },
+  {
+    "State": "Michigan",
+    "Democrat": "SenStabenow",
+    "Republican": "JohnJamesMI"
+  },
+  {
+    "State": "Minnesota",
+    "Democrat": "amyklobuchar",
+    "Republican": "NewbergerJim"
+  },
+  {
+    "State": "Mississippi",
+    "Democrat": "dbaria",
+    "Republican": "SenatorWicker"
+  },
+  {
+    "State": "Missouri",
+    "Democrat": "McCaskill4MO",
+    "Republican": "HawleyMO"
+  },
+  {
+    "State": "Montana",
+    "Democrat": "jontester",
+    "Republican": "MattForMontana"
+  },
+  {
+    "State": "Nebraska",
+    "Democrat": "JaneRaybould",
+    "Republican": "SenatorFischer"
+  },
+  {
+    "State": "Nevada",
+    "Democrat": "RosenforNevada",
+    "Republican": "DeanHeller"
+  },
+  {
+    "State": "New Jersey",
+    "Democrat": "SenatorMenendez",
+    "Republican": "BobHugin"
+  },
+  {
+    "State": "New Mexico",
+    "Democrat": "MartinHeinrich",
+    "Republican": "MickRich4Senate"
+  },
+  {
+    "State": "New York",
+    "Democrat": "SenGillibrand",
+    "Republican": "CheleFarley"
+  },
+  {
+    "State": "North Dakota",
+    "Democrat": "HeidiHeitkamp",
+    "Republican": "kevincramer"
+  }
+]
